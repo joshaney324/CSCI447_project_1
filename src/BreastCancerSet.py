@@ -24,5 +24,7 @@ class BreastCancerSet:
         for i in range(len(self.data)):
             self.data[i][0] = int(bin_indices[i])
 
+    def get_data(self):
+        return self.data
 
 
