@@ -12,17 +12,15 @@ class BreastCancerSet:
                     self.data[i][j] = int(self.data[i][j])
                 except ValueError:
                     self.data[i][j] = 0
+                    #or just delete that example from the dataset
+                    #del self.data[i]
 
-        col1 = []
+        #Remove the ID column
         for row in self.data:
-            col1.append(row[0])
+            del row[0]
+        
+        self.data=np.array(self.data)
 
-        num_bins = 3
-        bins = np.histogram_bin_edges(col1, bins=num_bins)
-
-        bin_indices = np.digitize(col1, bins)
-        for i in range(len(self.data)):
-            self.data[i][0] = int(bin_indices[i])
 
     def get_data(self):
         return self.data

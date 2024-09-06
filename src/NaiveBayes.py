@@ -1,10 +1,10 @@
 from collections import Counter
-
+import numpy as np
 
 class NaiveBayes:
     def __init__(self):
         self.class_probabilities = {}
-        self.feature_probabilities = {}
+        self.feature_probabilities = np.zeros((0, 0, 0))
         self.classes = []
         self.accuracy = 0
         self.precision = 0
@@ -45,8 +45,3 @@ class NaiveBayes:
                             if (dataset[i, k] == l):
                                 self.feature_probabilities[j, k, l] += 1
                 self.feature_probabilities[j] /= (class_counts[j]+d)
-
-
-
-
-
