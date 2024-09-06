@@ -1,6 +1,7 @@
 from collections import Counter
 import numpy as np
 
+
 class NaiveBayes:
     def __init__(self):
         self.class_probabilities = {}
