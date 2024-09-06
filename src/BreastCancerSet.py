@@ -23,6 +23,9 @@ class BreastCancerSet:
 
 
     def get_data(self):
-        return self.data
+        return self.data[:, :-1]
+
+    def get_labels(self):
+        return self.data[:, -1]
 
 
