@@ -1,5 +1,8 @@
 import numpy as np
 from collections import defaultdict
+# Use numpy for setting up arrays as well as getting unique values/counts
+# Use defaultdict to have a dictionary where you can put in a key that does not exist,
+# and it will automatically insert the value of lambda that is given at the constructor
 
 
 class NaiveBayes:
@@ -11,7 +14,13 @@ class NaiveBayes:
         self.classes = None
 
     def set_probabilities(self, data, labels):
-        d = 1  # Smoothing factor given in project instructions
+
+        # This function is meant to set self.class_probabilities and self.attribute probabilities. This
+        # function is the heart of the training method in the naive bayes algorithm. It takes in an n x m data array
+        # and an n length array of labels. These arrays can be any type
+
+        # hyperparameter given in project instructions
+        d = 1
 
         # get the number of samples and the number of features from the input array
         samples, features = data.shape
@@ -26,7 +35,8 @@ class NaiveBayes:
         # Set up attribute probabilities
         for class_instance in self.classes:
             # for every class in the dataset create an attribute_probability dictionary
-            attribute_probability = defaultdict(lambda: defaultdict(lambda: 1))
+            # set defaultdict lambda value to 0 so when an unrecognized key is called it sets the value as 0
+            attribute_probability = defaultdict(lambda: defaultdict(lambda: 0))
             self.attribute_probabilities[class_instance] = attribute_probability
 
         for class_instance in self.classes:
