@@ -26,41 +26,46 @@ class NaiveBayes:
         self.classes, class_counts = np.unique(labels, return_counts=True)
 
         # create a tuple of classes connected with their counts using zip then loop and divide the count by #samples
+
         for class_instance, count in zip(self.classes, class_counts):
             self.class_probabilities[class_instance] = count / samples
 
         # Set up attribute probabilities
-        for class_instance in self.classes:
-            # for every class in the dataset create an attribute_probability dictionary
+        # for class_instance in self.classes:
+        #     # for every class in the dataset create an attribute_probability dictionary
+        #
+        #     # if dictionary keys do not exist create key value pair
+        #     if class_instance not in self.attribute_probabilities:
+        #         self.attribute_probabilities[class_instance] = {}
+        #     if class_instance not in self.class_counts:
+        #         self.class_counts[class_instance] = 0
 
-            # if dictionary keys do not exist create key value pair
+        for class_instance in self.classes:
             if class_instance not in self.attribute_probabilities:
                 self.attribute_probabilities[class_instance] = {}
-            self.attribute_probabilities[class_instance] = {}
             if class_instance not in self.class_counts:
                 self.class_counts[class_instance] = 0
 
-        for class_instance in self.classes:
             # Get examples of the current class
             class_data = data[labels == class_instance]
             self.class_counts[class_instance] = len(class_data)
 
-            for j in range(features):
+            for feature_idx in range(features):
                 # for each feature in the dataset, get every value that occurs for that feature as well as the counts
                 # for that specific value
                 # if dictionary key does not exist then create empy dictionary
-                if j not in self.attribute_probabilities[class_instance]:
-                    self.attribute_probabilities[class_instance][j] = {}
+                if feature_idx not in self.attribute_probabilities[class_instance]:
+                    self.attribute_probabilities[class_instance][feature_idx] = {}
 
-                feature_values, value_counts = np.unique(class_data[:, j], return_counts=True)
+                feature_values, value_counts = np.unique(class_data[:, feature_idx], return_counts=True)
                 # get total number of class instances and then add d
                 total = len(class_data) + self.d
                 # use zip function to combine all the unique values and their counts, then calculate the specific
                 # attribute probability
                 for value, count in zip(feature_values, value_counts):
-                    if value not in self.attribute_probabilities[class_instance][j]:
-                        self.attribute_probabilities[class_instance][j][value] = {}
-                    self.attribute_probabilities[class_instance][j][value] = (count + 1) / total
+                    if value not in self.attribute_probabilities[class_instance][feature_idx]:
+                        self.attribute_probabilities[class_instance][feature_idx][value] = {}
+                    self.attribute_probabilities[class_instance][feature_idx][value] = (count + 1) / total
 
     def calculate_total_probability(self, instance):
         total_probabilities = {}
@@ -71,13 +76,13 @@ class NaiveBayes:
             # for each feature in the instance get the attribute probabilities and append them to the specific
             # probability for this instance. Then set the specific probability
             # by multiplying all the specific probabilities
-            for j in range(len(instance)):
-                attribute_value = instance[j]
+            for feature_idx in range(len(instance)):
+                attribute_value = instance[feature_idx]
 
                 # if attribute not found in training set calculate probability by just having 1
-                if attribute_value not in self.attribute_probabilities[class_instance][j]:
-                    self.attribute_probabilities[class_instance][j][attribute_value] = 1 / (self.class_counts[class_instance] + self.d)
-                attribute_probability = self.attribute_probabilities[class_instance][j][attribute_value]
+                if attribute_value not in self.attribute_probabilities[class_instance][feature_idx]:
+                    self.attribute_probabilities[class_instance][feature_idx][attribute_value] = 1 / (self.class_counts[class_instance] + self.d)
+                attribute_probability = self.attribute_probabilities[class_instance][feature_idx][attribute_value]
                 specific_probabilities.append(attribute_probability)
             specific_probability = np.prod(specific_probabilities)
             # set the total probability as the class probability times the specific probability and return it
