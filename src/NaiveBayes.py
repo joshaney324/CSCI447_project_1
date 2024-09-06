@@ -32,6 +32,8 @@ class NaiveBayes:
         # Set up attribute probabilities
         for class_instance in self.classes:
             # for every class in the dataset create an attribute_probability dictionary
+
+            # if dictionary keys do not exist create key value pair
             if class_instance not in self.attribute_probabilities:
                 self.attribute_probabilities[class_instance] = {}
             self.attribute_probabilities[class_instance] = {}
@@ -46,6 +48,7 @@ class NaiveBayes:
             for j in range(features):
                 # for each feature in the dataset, get every value that occurs for that feature as well as the counts
                 # for that specific value
+                # if dictionary key does not exist then create empy dictionary
                 if j not in self.attribute_probabilities[class_instance]:
                     self.attribute_probabilities[class_instance][j] = {}
 
@@ -70,6 +73,8 @@ class NaiveBayes:
             # by multiplying all the specific probabilities
             for j in range(len(instance)):
                 attribute_value = instance[j]
+
+                # if attribute not found in training set calculate probability by just having 1
                 if attribute_value not in self.attribute_probabilities[class_instance][j]:
                     self.attribute_probabilities[class_instance][j][attribute_value] = 1 / (self.class_counts[class_instance] + self.d)
                 attribute_probability = self.attribute_probabilities[class_instance][j][attribute_value]
