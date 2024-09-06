@@ -2,8 +2,6 @@ from BreastCancerSet import BreastCancerSet
 from NaiveBayes import NaiveBayes
 import numpy as np
 
-# Test pushing to repository
-
 breast_cancer = BreastCancerSet()
 data = breast_cancer.get_data()
 labels = breast_cancer.get_labels()
