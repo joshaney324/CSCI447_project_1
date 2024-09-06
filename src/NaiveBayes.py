@@ -103,7 +103,7 @@ class NaiveBayes:
         accuracy = 0
         fold_size = samples // folds
         for i in range(folds):
-            if (i != folds - 1):
+            if i != folds - 1:
                 test_set = dataset[i*fold_size:(i+1)*fold_size]
                 training_set = np.concatenate((dataset[:i*fold_size], dataset[(i+1)*fold_size:]))
             else:
@@ -113,6 +113,7 @@ class NaiveBayes:
             predictions = self.classify(test_set[:, :-1])
             accuracy += np.mean(predictions == test_set[:, -1])
         accuracy /= folds
+        return accuracy
 
             
 

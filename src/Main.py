@@ -14,4 +14,5 @@ naive.set_probabilities(train, train_labels)
 predictions = naive.classify(test)
 
 print(np.mean(predictions == test_labels))
+print(naive.cross_validate(breast_cancer))
 
