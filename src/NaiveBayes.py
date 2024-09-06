@@ -1,8 +1,6 @@
 import numpy as np
-from collections import defaultdict
+
 # Use numpy for setting up arrays as well as getting unique values/counts
-# Use defaultdict to have a dictionary where you can put in a key that does not exist,
-# and it will automatically insert the value of lambda that is given at the constructor
 
 
 class NaiveBayes:
@@ -12,15 +10,14 @@ class NaiveBayes:
         self.class_probabilities = {}
         self.attribute_probabilities = {}
         self.classes = None
+        self.class_counts = {}
+        self.d = 1
 
     def set_probabilities(self, data, labels):
 
         # This function is meant to set self.class_probabilities and self.attribute probabilities. This
         # function is the heart of the training method in the naive bayes algorithm. It takes in an n x m data array
         # and an n length array of labels. These arrays can be any type
-
-        # hyperparameter given in project instructions
-        d = 1
 
         # get the number of samples and the number of features from the input array
         samples, features = data.shape
@@ -35,23 +32,31 @@ class NaiveBayes:
         # Set up attribute probabilities
         for class_instance in self.classes:
             # for every class in the dataset create an attribute_probability dictionary
-            # set defaultdict lambda value to 0 so when an unrecognized key is called it sets the value as 0
-            attribute_probability = defaultdict(lambda: defaultdict(lambda: 0))
-            self.attribute_probabilities[class_instance] = attribute_probability
+            if class_instance not in self.attribute_probabilities:
+                self.attribute_probabilities[class_instance] = {}
+            self.attribute_probabilities[class_instance] = {}
+            if class_instance not in self.class_counts:
+                self.class_counts[class_instance] = 0
 
         for class_instance in self.classes:
             # Get examples of the current class
             class_data = data[labels == class_instance]
+            self.class_counts[class_instance] = len(class_data)
 
             for j in range(features):
                 # for each feature in the dataset, get every value that occurs for that feature as well as the counts
                 # for that specific value
+                if j not in self.attribute_probabilities[class_instance]:
+                    self.attribute_probabilities[class_instance][j] = {}
+
                 feature_values, value_counts = np.unique(class_data[:, j], return_counts=True)
                 # get total number of class instances and then add d
-                total = len(class_data) + d
+                total = len(class_data) + self.d
                 # use zip function to combine all the unique values and their counts, then calculate the specific
                 # attribute probability
                 for value, count in zip(feature_values, value_counts):
+                    if value not in self.attribute_probabilities[class_instance][j]:
+                        self.attribute_probabilities[class_instance][j][value] = {}
                     self.attribute_probabilities[class_instance][j][value] = (count + 1) / total
 
     def calculate_total_probability(self, instance):
@@ -65,6 +70,8 @@ class NaiveBayes:
             # by multiplying all the specific probabilities
             for j in range(len(instance)):
                 attribute_value = instance[j]
+                if attribute_value not in self.attribute_probabilities[class_instance][j]:
+                    self.attribute_probabilities[class_instance][j][attribute_value] = 1 / (self.class_counts[class_instance] + self.d)
                 attribute_probability = self.attribute_probabilities[class_instance][j][attribute_value]
                 specific_probabilities.append(attribute_probability)
             specific_probability = np.prod(specific_probabilities)
