@@ -154,36 +154,37 @@ print(naive_soy.cross_validate(soy_set))
 
 # Glass Set
 
-glass_set = GlassSet()
-glass_data = glass_set.get_data()
-glass_train = glass_data[:int(len(glass_data) * .6)]
-glass_test = glass_data[int(len(glass_data) * -.4):]
-glass_labels = glass_set.get_labels()
-glass_train_labels = glass_labels[:int(len(glass_data) * .6)]
-glass_test_labels = glass_labels[int(len(glass_data) * -.4):]
+for i in [3, 4, 5]:
+    glass_set = GlassSet(i)
+    glass_data = glass_set.get_data()
+    glass_train = glass_data[:int(len(glass_data) * .6)]
+    glass_test = glass_data[int(len(glass_data) * -.4):]
+    glass_labels = glass_set.get_labels()
+    glass_train_labels = glass_labels[:int(len(glass_data) * .6)]
+    glass_test_labels = glass_labels[int(len(glass_data) * -.4):]
 
-naive_glass = NaiveBayes()
-naive_glass.set_probabilities(glass_train, glass_train_labels)
-glass_predictions = naive_glass.classify(glass_test)
+    naive_glass = NaiveBayes()
+    naive_glass.set_probabilities(glass_train, glass_train_labels)
+    glass_predictions = naive_glass.classify(glass_test)
 
-print("Glass Data")
-print(np.mean(glass_predictions == glass_test_labels))
-print(naive_glass.cross_validate(glass_set))
+    print("Glass Data with " + str(i) + " bins")
+    print(np.mean(glass_predictions == glass_test_labels))
+    print(naive_glass.cross_validate(glass_set))
 
-glass_set = GlassSet()
-glass_set.add_noise()
-glass_data = glass_set.get_data()
-glass_train = glass_data[:int(len(glass_data) * .6)]
-glass_test = glass_data[int(len(glass_data) * -.4):]
-glass_labels = glass_set.get_labels()
-glass_train_labels = glass_labels[:int(len(glass_data) * .6)]
-glass_test_labels = glass_labels[int(len(glass_data) * -.4):]
+    glass_set = GlassSet(i)
+    glass_set.add_noise()
+    glass_data = glass_set.get_data()
+    glass_train = glass_data[:int(len(glass_data) * .6)]
+    glass_test = glass_data[int(len(glass_data) * -.4):]
+    glass_labels = glass_set.get_labels()
+    glass_train_labels = glass_labels[:int(len(glass_data) * .6)]
+    glass_test_labels = glass_labels[int(len(glass_data) * -.4):]
 
-naive_glass = NaiveBayes()
-naive_glass.set_probabilities(glass_train, glass_train_labels)
-glass_predictions = naive_glass.classify(glass_test)
+    naive_glass = NaiveBayes()
+    naive_glass.set_probabilities(glass_train, glass_train_labels)
+    glass_predictions = naive_glass.classify(glass_test)
 
-print("Glass Data With Noise")
-print(np.mean(glass_predictions == glass_test_labels))
-print(naive_glass.cross_validate(glass_set))
+    print("Glass Data With Noise and " + str(i) + " bins")
+    print(np.mean(glass_predictions == glass_test_labels))
+    print(naive_glass.cross_validate(glass_set))
 

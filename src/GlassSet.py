@@ -4,7 +4,9 @@ import random as random
 
 
 class GlassSet:
-    def __init__(self):
+    #this constructor takes in num_bins as a parameter giving the number of bins we want to
+    #separate the values into
+    def __init__(self, num_bins):
         with open("../data/glass.data", "r") as data_file:
             self.data = list(csv.reader(data_file, delimiter=','))
         invalid_rows = []
@@ -14,12 +16,18 @@ class GlassSet:
                     self.data[i][j] = float(self.data[i][j])
                 except ValueError:
                     invalid_rows.append(i)
+        for row in invalid_rows:
+            del self.data[row]
+
         self.data = np.array(self.data[:-1])
         self.data = np.delete(self.data, 0, 1)
+
         for i in range(len(self.data[0]) - 1):
             column = self.data[:,i]
-            bins = np.histogram_bin_edges(column, bins = "auto")
-
+            ##bins = np.histogram_bin_edges(column, bins = "auto")
+            bins = [0]
+            for j in range(num_bins):
+                bins.append(np.percentile(column, j*(100/num_bins)))
             bin_assignments = np.digitize(column, bins)
             for j in range(len(column)):
                 self.data[j][i] = bin_assignments[j]
