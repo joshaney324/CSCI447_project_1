@@ -21,6 +21,7 @@ class NaiveBayes:
 
         # get the number of samples and the number of features from the input array
         samples, features = data.shape
+        self.d = features
 
         # Get unique classes and their counts
         self.classes, class_counts = np.unique(labels, return_counts=True)
@@ -30,16 +31,7 @@ class NaiveBayes:
         for class_instance, count in zip(self.classes, class_counts):
             self.class_probabilities[class_instance] = count / samples
 
-        # Set up attribute probabilities
-        # for class_instance in self.classes:
-        #     # for every class in the dataset create an attribute_probability dictionary
-        #
-        #     # if dictionary keys do not exist create key value pair
-        #     if class_instance not in self.attribute_probabilities:
-        #         self.attribute_probabilities[class_instance] = {}
-        #     if class_instance not in self.class_counts:
-        #         self.class_counts[class_instance] = 0
-
+        # if class dictionary does not exist create a dictionary
         for class_instance in self.classes:
             if class_instance not in self.attribute_probabilities:
                 self.attribute_probabilities[class_instance] = {}

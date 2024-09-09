@@ -25,7 +25,7 @@ iris_test = iris_data[:int(len(iris_data) * -.4):]
 iris_labels = iris_set.get_labels()
 iris_train_labels = iris_labels[:int(len(iris_data) * .6)]
 iris_test_labels = iris_labels[:int(len(iris_data) * -.4):]
-iris_set.add_noise()
+# iris_set.add_noise()
 
 naive_iris = NaiveBayes()
 naive_iris.set_probabilities(iris_train, iris_train_labels)
