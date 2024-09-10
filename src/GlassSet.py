@@ -22,6 +22,12 @@ class GlassSet:
         self.data = np.array(self.data[:-1])
         self.data = np.delete(self.data, 0, 1)
 
+        for i in range(len(self.data)):
+            if int(self.data[i, 9]) in [1, 2, 3, 4]:
+                self.data[i, 9] = 1
+            elif int(self.data[i, 9]) in [5, 6, 7]:
+                self.data[i, 9] = 2
+
         for i in range(len(self.data[0]) - 1):
             column = self.data[:,i]
             ##bins = np.histogram_bin_edges(column, bins = "auto")
