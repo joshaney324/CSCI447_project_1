@@ -33,30 +33,24 @@ class NaiveBayes:
 
         # if class dictionary does not exist create a dictionary
         for class_instance in self.classes:
-            if class_instance not in self.attribute_probabilities:
-                self.attribute_probabilities[class_instance] = {}
-            if class_instance not in self.class_counts:
-                self.class_counts[class_instance] = 0
-
             # Get examples of the current class
             class_data = data[labels == class_instance]
+            self.attribute_probabilities[class_instance] = {}
             self.class_counts[class_instance] = len(class_data)
+
+            # get total number of class instances and then add d
+            total = len(class_data) + self.d
 
             for feature_idx in range(features):
                 # for each feature in the dataset, get every value that occurs for that feature as well as the counts
                 # for that specific value
                 # if dictionary key does not exist then create empy dictionary
-                if feature_idx not in self.attribute_probabilities[class_instance]:
-                    self.attribute_probabilities[class_instance][feature_idx] = {}
+                self.attribute_probabilities[class_instance][feature_idx] = {}
 
                 feature_values, value_counts = np.unique(class_data[:, feature_idx], return_counts=True)
-                # get total number of class instances and then add d
-                total = len(class_data) + self.d
                 # use zip function to combine all the unique values and their counts, then calculate the specific
                 # attribute probability
                 for value, count in zip(feature_values, value_counts):
-                    if value not in self.attribute_probabilities[class_instance][feature_idx]:
-                        self.attribute_probabilities[class_instance][feature_idx][value] = {}
                     self.attribute_probabilities[class_instance][feature_idx][value] = (count + 1) / total
 
     def calculate_total_probability(self, instance):
