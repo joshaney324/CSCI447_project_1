@@ -4,6 +4,7 @@ from SoyBeanSet import SoyBeanSet
 from HouseVoteSet import HouseVoteSet
 from GlassSet import GlassSet
 from NaiveBayes import NaiveBayes
+from LossFunctions import precision, recall
 import numpy as np
 
 # Breast Cancer Set
@@ -59,7 +60,6 @@ print("Iris Data")
 print(np.mean(iris_predictions == iris_test_labels))
 print(naive_iris.cross_validate(iris_set))
 
-
 # iris set with noise
 
 iris_set = IrisSet()
@@ -78,6 +78,30 @@ iris_predictions = naive_iris.classify(iris_test)
 print("Iris Data With Noise")
 print(np.mean(iris_predictions == iris_test_labels))
 print(naive_iris.cross_validate(iris_set))
+
+iris_precision = np.array(precision(iris_predictions, iris_test_labels))
+iris_recall = np.array(recall(iris_predictions, iris_test_labels))
+
+# Get precision average
+total = 0
+counter = 0
+for value in iris_precision[:, 1]:
+    total += float(value)
+    counter += 1
+
+precision_average = total / counter
+
+# Get recall average
+total = 0
+counter = 0
+for value in iris_recall[:, 1]:
+    total += float(value)
+    counter += 1
+
+recall_average = total / counter
+
+print("Precision: " + str(precision_average))
+print("Recall: " + str(recall_average))
 
 # House set
 
@@ -152,9 +176,33 @@ print("Soy Data With Noise")
 print(np.mean(soy_predictions == soy_test_labels))
 print(naive_soy.cross_validate(soy_set))
 
+soy_precision = np.array(precision(soy_predictions, soy_test_labels))
+soy_recall = np.array(recall(soy_predictions, soy_test_labels))
+
+# Get precision average
+total = 0
+counter = 0
+for value in soy_precision[:, 1]:
+    total += float(value)
+    counter += 1
+
+precision_average = total / counter
+
+# Get recall average
+total = 0
+counter = 0
+for value in soy_recall[:, 1]:
+    total += float(value)
+    counter += 1
+
+recall_average = total / counter
+
+print("Precision: " + str(precision_average))
+print("Recall: " + str(recall_average))
+
 # Glass Set
 
-for i in [3, 4, 5]:
+for i in [8]:
     glass_set = GlassSet(i)
     glass_data = glass_set.get_data()
     glass_train = glass_data[:int(len(glass_data) * .6)]
@@ -187,4 +235,9 @@ for i in [3, 4, 5]:
     print("Glass Data With Noise and " + str(i) + " bins")
     print(np.mean(glass_predictions == glass_test_labels))
     print(naive_glass.cross_validate(glass_set))
+    glass_precision = np.array(precision(glass_predictions, glass_test_labels))
+    glass_recall = np.array(recall(glass_predictions, glass_test_labels))
+
+    print("Precision: " + str(np.average(glass_precision[:, 1])))
+    print("Recall: " + str(np.average(glass_recall[:, 1])))
 
