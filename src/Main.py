@@ -201,9 +201,10 @@ print("Precision: " + str(precision_average))
 print("Recall: " + str(recall_average))
 
 # Glass Set
+# when constructing input number of bins and number of classes to classify
 
 for i in [8]:
-    glass_set = GlassSet(i)
+    glass_set = GlassSet(i, 2)
     glass_data = glass_set.get_data()
     glass_train = glass_data[:int(len(glass_data) * .6)]
     glass_test = glass_data[int(len(glass_data) * -.4):]
@@ -219,7 +220,7 @@ for i in [8]:
     print(np.mean(glass_predictions == glass_test_labels))
     print(naive_glass.cross_validate(glass_set))
 
-    glass_set = GlassSet(i)
+    glass_set = GlassSet(i, 2)
     glass_set.add_noise()
     glass_data = glass_set.get_data()
     glass_train = glass_data[:int(len(glass_data) * .6)]

@@ -4,9 +4,12 @@ import random as random
 
 
 class GlassSet:
-    #this constructor takes in num_bins as a parameter giving the number of bins we want to
-    #separate the values into
-    def __init__(self, num_bins):
+
+    # this constructor takes in num_bins as a parameter giving the number of bins we want to
+    # separate the values into
+    # it also takes the number of classes to classify. Either 2 or 7
+
+    def __init__(self, num_bins, num_classes):
         with open("../data/glass.data", "r") as data_file:
             self.data = list(csv.reader(data_file, delimiter=','))
         invalid_rows = []
@@ -21,16 +24,16 @@ class GlassSet:
 
         self.data = np.array(self.data[:-1])
         self.data = np.delete(self.data, 0, 1)
-
-        for i in range(len(self.data)):
-            if int(self.data[i, 9]) in [1, 2, 3, 4]:
-                self.data[i, 9] = 1
-            elif int(self.data[i, 9]) in [5, 6, 7]:
-                self.data[i, 9] = 2
+        if num_classes == 2:
+            for i in range(len(self.data)):
+                if int(self.data[i, 9]) in [1, 2, 3, 4]:
+                    self.data[i, 9] = 1
+                elif int(self.data[i, 9]) in [5, 6, 7]:
+                    self.data[i, 9] = 2
 
         for i in range(len(self.data[0]) - 1):
             column = self.data[:,i]
-            ##bins = np.histogram_bin_edges(column, bins = "auto")
+            # bins = np.histogram_bin_edges(column, bins = "auto")
             bins = [0]
             for j in range(num_bins):
                 bins.append(np.percentile(column, j*(100/num_bins)))
