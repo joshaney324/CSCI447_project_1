@@ -4,7 +4,7 @@ from SoyBeanSet import SoyBeanSet
 from HouseVoteSet import HouseVoteSet
 from GlassSet import GlassSet
 from NaiveBayes import NaiveBayes
-from LossFunctions import precision, recall
+from LossFunctions import precision, recall, accuracy
 import numpy as np
 
 # Breast Cancer Set
@@ -237,7 +237,9 @@ for i in [8]:
     print(naive_glass.cross_validate(glass_set))
     glass_precision = np.array(precision(glass_predictions, glass_test_labels))
     glass_recall = np.array(recall(glass_predictions, glass_test_labels))
+    glass_accuracy = np.array(accuracy(glass_predictions, glass_test_labels))
 
     print("Precision: " + str(np.average(glass_precision[:, 1])))
     print("Recall: " + str(np.average(glass_recall[:, 1])))
+    print("Accuracy: " + str(np.average(glass_accuracy[:, 1])))
 
