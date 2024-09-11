@@ -82,8 +82,7 @@ class NaiveBayes:
             predictions.append(max(total_probabilities, key=total_probabilities.get))
         return np.array(predictions)
 
-    def cross_validate(self, dataset):
-        num_folds = 10
+    def cross_validate(self, dataset, num_folds):
         labels = dataset.get_labels()
         data = dataset.get_data()
         #determine the number of instances of each class in each fold,
@@ -107,16 +106,22 @@ class NaiveBayes:
         #iterate down the columns (classes) in the num_instances_perfold array,
         #then across the rows (folds) in the array,
         #then get the number of instances of that class in that fold,
-        #then iterate through the labels to add them
+        #then iterate through the labels to add them,
+        #and remove the instances added to that fold from the data/labels classes to ensure uniqueness
         for i in range(len(num_instances_perfold[:,0])):
             for j in range(len(num_instances_perfold[i])):
                 num_instances_infold = num_instances_perfold[i,j]
-                for k in range(len(labels)):
+                k = 0
+                while k < len(labels):
                     if classes[j] == labels[k]:
                         label_folds[i] = np.append(label_folds[i], labels[k])
                         data_folds[i] = np.vstack((data_folds[i], data[k]))
+                        data = np.delete(data, k, 0)
+                        labels = np.delete(labels, k)
                         num_instances_infold -= 1
+                        k -= 1
                     if num_instances_infold == 0:
                         break
+                    k += 1
         #return a tuple of data_folds, label_folds
         return data_folds, label_folds
