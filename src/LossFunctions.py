@@ -56,15 +56,15 @@ def accuracy(predictions, labels):
         fn = 0
         for prediction, label in zip(predictions, labels):
             if prediction == class_instance:
-                if prediction == label:
+                if class_instance == label:
                     tp += 1
                 else:
                     fp += 1
             else:
-                if prediction == label:
-                    tn += 1
-                else:
+                if class_instance == label:
                     fn += 1
+                else:
+                    tn += 1
         class_accuracies.append(float((tp + tn) / (tp + tn + fp + fn)))
         
     return list(zip(classes, class_accuracies))
