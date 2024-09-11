@@ -22,9 +22,7 @@ def precision(predictions, labels):
                 tp += 1
             elif prediction == class_instance and prediction != label:
                 fp += 1
-        if tp + fp == 0:
-            class_precisions.append(1)
-        else:
+        if tp + fp != 0:
             class_precisions.append(float(tp/(tp + fp)))
 
     return list(zip(classes, class_precisions))
@@ -51,9 +49,7 @@ def recall(predictions, labels):
                 tp += 1
             elif prediction != class_instance and class_instance == label:
                 fn += 1
-        if tp + fn == 0:
-            class_recalls.append(1)
-        else:
+        if tp + fn != 0:
             class_recalls.append(float(tp / (tp + fn)))
         
     return list(zip(classes, class_recalls))
