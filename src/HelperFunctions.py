@@ -3,12 +3,18 @@ from LossFunctions import precision, recall, accuracy
 import numpy as np
 
 
-def test_cross(data_folds, label_folds):
+def cross_validate(data_folds, label_folds):
+    # the cross_validate function is meant to get the precision, recall and accuracy values from each fold then print
+    # out the average across folds. this function takes in a list of data folds and a list of label folds. it does not
+    # return anything but prints out the metrics
+
+    # Set up variables
     precision_avg = 0.0
     recall_avg = 0.0
     accuracy_avg = 0.0
-    num_folds = len(data_folds)
+    folds = len(data_folds)
 
+    # For each testing fold, set up a training and testing set and then append the loss function values
     for i in range(len(data_folds)):
         train_data = []
         test_data = []
@@ -24,6 +30,7 @@ def test_cross(data_folds, label_folds):
                     test_data.append(instance)
                     test_labels.append(label)
 
+        # make all the data into np arrays so that naive bayes class can use them
         train_data = np.array(train_data)
         train_labels = np.array(train_labels)
         test_data = np.array(test_data)
@@ -40,6 +47,8 @@ def test_cross(data_folds, label_folds):
         recall_total = 0
         accuracy_total = 0
         counter = 0
+
+        # get the averages of all the precision, recall, and accuracy values from all the folds
         for precision_val, recall_val, accuracy_val in zip(precision_vals, recall_vals, accuracy_vals):
             precision_total += float(precision_val[1])
             recall_total += float(recall_val[1])
@@ -55,7 +64,61 @@ def test_cross(data_folds, label_folds):
         # print("Recall: " + str(recall_total/counter))
         # print("Accuracy: " + str(accuracy_total/counter))
 
-    print("Average precision: " + str(precision_avg / num_folds))
-    print("Average recall: " + str(recall_avg / num_folds))
-    print("Average accuracy: " + str(accuracy_avg / num_folds))
+    print("Average precision: " + str(precision_avg / folds))
+    print("Average recall: " + str(recall_avg / folds))
+    print("Average accuracy: " + str(accuracy_avg / folds))
+
+
+def get_folds(dataset, num_folds):
+
+    # the get_folds function is meant to split the data up into a specified number of folds. this function takes in a
+    # Dataset object as well as a specified number of folds. it then returns a list of all the data folds and label
+    # folds
+
+    labels = dataset.get_labels()
+    data = dataset.get_data()
+
+    # determine the number of instances of each class in each fold,
+    # storing the values in a 2d numpy array (each row is a fold, each column is a class)
+    classes, num_instances = np.unique(labels, return_counts=True)
+    num_instances_perfold = np.zeros((num_folds, len(classes)), int)
+    for i in range(len(num_instances_perfold[0])):
+        for j in range(len(num_instances_perfold)):
+            num_instances_perfold[j,i] = num_instances[i] // num_folds
+        num_extra = num_instances[i] % num_folds
+        for k in range(num_extra):
+            num_instances_perfold[k,i] += 1
+
+    # declare two lists of np arrays, each list entry representing a fold,
+    # one list with data and one with labels
+    label_folds = []
+    for i in range(num_folds):
+        label_folds.append(np.empty(shape=0))
+    data_folds = []
+    for i in range(num_folds):
+        data_folds.append(np.empty(shape=(0, len(data[0]))))
+
+    # iterate down the columns (classes) in the num_instances_perfold array,
+    # then across the rows (folds) in the array,
+    # then get the number of instances of that class in that fold,
+    # then iterate through the labels to add them,
+    # and remove the instances added to that fold from the data/labels classes to ensure uniqueness
+    for i in range(len(num_instances_perfold[:,0])):
+        for j in range(len(num_instances_perfold[i])):
+            num_instances_infold = num_instances_perfold[i,j]
+            k = 0
+            while k < len(labels):
+                if classes[j] == labels[k]:
+                    label_folds[i] = np.append(label_folds[i], labels[k])
+                    data_folds[i] = np.vstack((data_folds[i], data[k]))
+                    data = np.delete(data, k, 0)
+                    labels = np.delete(labels, k)
+                    num_instances_infold -= 1
+                    k -= 1
+                if num_instances_infold == 0:
+                    break
+                k += 1
+    # return a tuple of data_folds, label_folds
+    return data_folds, label_folds
+
 
