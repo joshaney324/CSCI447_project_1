@@ -2,6 +2,7 @@ import numpy as np
 
 # Use numpy for setting up arrays as well as getting unique values/counts
 
+
 class NaiveBayes:
 
     # constructor
