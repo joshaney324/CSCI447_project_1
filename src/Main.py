@@ -5,7 +5,9 @@ from HouseVoteSet import HouseVoteSet
 from GlassSet import GlassSet
 from NaiveBayes import NaiveBayes
 from LossFunctions import precision, recall, accuracy
+from HelperFunctions import test_cross
 import numpy as np
+
 
 # Breast Cancer Set
 
@@ -23,7 +25,9 @@ breast_cancer_predictions = naive_breast_cancer.classify(breast_cancer_test)
 
 print("Breast Cancer Data")
 print(np.mean(breast_cancer_predictions == breast_cancer_test_labels))
-#print(naive_breast_cancer.cross_validate(breast_cancer))
+data_folds, label_folds = naive_breast_cancer.cross_validate(breast_cancer, 10)
+test_cross(data_folds, label_folds)
+
 
 breast_cancer = BreastCancerSet()
 breast_cancer.add_noise()
@@ -40,7 +44,7 @@ breast_cancer_predictions = naive_breast_cancer.classify(breast_cancer_test)
 
 print("Breast cancer set with noise")
 print(np.mean(breast_cancer_predictions == breast_cancer_test_labels))
-#print(naive_breast_cancer.cross_validate(breast_cancer))
+# print(naive_breast_cancer.cross_validate(breast_cancer, 10))
 
 # Iris Set
 
@@ -58,7 +62,7 @@ iris_predictions = naive_iris.classify(iris_test)
 
 print("Iris Data")
 print(np.mean(iris_predictions == iris_test_labels))
-#print(naive_iris.cross_validate(iris_set))
+# print(naive_iris.cross_validate(iris_set, 10))
 
 # iris set with noise
 
@@ -77,7 +81,7 @@ iris_predictions = naive_iris.classify(iris_test)
 
 print("Iris Data With Noise")
 print(np.mean(iris_predictions == iris_test_labels))
-#print(naive_iris.cross_validate(iris_set))
+# print(naive_iris.cross_validate(iris_set, 10))
 
 iris_precision = np.array(precision(iris_predictions, iris_test_labels))
 iris_recall = np.array(recall(iris_predictions, iris_test_labels))
@@ -119,7 +123,7 @@ house_predictions = naive_house.classify(house_test)
 
 print("House Vote Data")
 print(np.mean(house_predictions == house_test_labels))
-#print(naive_house.cross_validate(house_set))
+# print(naive_house.cross_validate(house_set, 10))
 
 # House set with noise
 house_set = HouseVoteSet()
@@ -137,7 +141,7 @@ house_predictions = naive_house.classify(house_test)
 
 print("House Vote Data With Noise")
 print(np.mean(house_predictions == house_test_labels))
-#print(naive_house.cross_validate(house_set))
+# print(naive_house.cross_validate(house_set, 10))
 
 # Soy set
 
@@ -155,7 +159,7 @@ soy_predictions = naive_soy.classify(soy_test)
 
 print("Soy Data")
 print(np.mean(soy_predictions == soy_test_labels))
-#print(naive_soy.cross_validate(soy_set))
+# print(naive_soy.cross_validate(soy_set, 10))
 
 # Soy set with noise
 
@@ -174,7 +178,7 @@ soy_predictions = naive_soy.classify(soy_test)
 
 print("Soy Data With Noise")
 print(np.mean(soy_predictions == soy_test_labels))
-#print(naive_soy.cross_validate(soy_set))
+# print(naive_soy.cross_validate(soy_set, 10))
 
 soy_precision = np.array(precision(soy_predictions, soy_test_labels))
 soy_recall = np.array(recall(soy_predictions, soy_test_labels))
@@ -218,7 +222,7 @@ for i in [8]:
 
     print("Glass Data with " + str(i) + " bins")
     print(np.mean(glass_predictions == glass_test_labels))
-    #print(naive_glass.cross_validate(glass_set))
+    # print(naive_glass.cross_validate(glass_set, 10))
 
     glass_set = GlassSet(i, 2)
     glass_set.add_noise()
@@ -235,7 +239,7 @@ for i in [8]:
 
     print("Glass Data With Noise and " + str(i) + " bins")
     print(np.mean(glass_predictions == glass_test_labels))
-    #print(naive_glass.cross_validate(glass_set))
+    # print(naive_glass.cross_validate(glass_set, 10))
     glass_precision = np.array(precision(glass_predictions, glass_test_labels))
     glass_recall = np.array(recall(glass_predictions, glass_test_labels))
     glass_accuracy = np.array(accuracy(glass_predictions, glass_test_labels))
@@ -243,4 +247,5 @@ for i in [8]:
     print("Precision: " + str(np.average(glass_precision[:, 1])))
     print("Recall: " + str(np.average(glass_recall[:, 1])))
     print("Accuracy: " + str(np.average(glass_accuracy[:, 1])))
+
 

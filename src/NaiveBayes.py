@@ -85,8 +85,8 @@ class NaiveBayes:
     def cross_validate(self, dataset, num_folds):
         labels = dataset.get_labels()
         data = dataset.get_data()
-        #determine the number of instances of each class in each fold,
-        #storing the values in a 2d numpy array (each row is a fold, each column is a class)
+        # determine the number of instances of each class in each fold,
+        # storing the values in a 2d numpy array (each row is a fold, each column is a class)
         classes, num_instances = np.unique(labels, return_counts=True)
         num_instances_perfold = np.zeros((num_folds, len(classes)), int)
         for i in range(len(num_instances_perfold[0])):
@@ -95,19 +95,19 @@ class NaiveBayes:
             num_extra = num_instances[i] % num_folds
             for k in range(num_extra):
                 num_instances_perfold[k,i] += 1
-        #declare two lists of np arrays, each list entry representing a fold,
-        #one list with data and one with labels
+        # declare two lists of np arrays, each list entry representing a fold,
+        # one list with data and one with labels
         label_folds = []
         for i in range(num_folds):
-            label_folds.append(np.empty(shape = 0))
+            label_folds.append(np.empty(shape=0))
         data_folds = []
         for i in range(num_folds):
             data_folds.append(np.empty(shape=(0, len(data[0]))))
-        #iterate down the columns (classes) in the num_instances_perfold array,
-        #then across the rows (folds) in the array,
-        #then get the number of instances of that class in that fold,
-        #then iterate through the labels to add them,
-        #and remove the instances added to that fold from the data/labels classes to ensure uniqueness
+        # iterate down the columns (classes) in the num_instances_perfold array,
+        # then across the rows (folds) in the array,
+        # then get the number of instances of that class in that fold,
+        # then iterate through the labels to add them,
+        # and remove the instances added to that fold from the data/labels classes to ensure uniqueness
         for i in range(len(num_instances_perfold[:,0])):
             for j in range(len(num_instances_perfold[i])):
                 num_instances_infold = num_instances_perfold[i,j]
@@ -125,3 +125,4 @@ class NaiveBayes:
                     k += 1
         #return a tuple of data_folds, label_folds
         return data_folds, label_folds
+
