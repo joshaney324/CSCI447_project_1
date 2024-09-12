@@ -13,6 +13,7 @@ def cross_validate(data_folds, label_folds):
     accuracy_avg = 0.0
     folds = len(data_folds)
     matrix_total = np.zeros((2,2))
+    accuracies = []
 
     # For each testing fold, set up a training and testing set and then append the loss function values
     for i in range(len(data_folds)):
@@ -53,6 +54,7 @@ def cross_validate(data_folds, label_folds):
         for precision_val, recall_val, accuracy_val in zip(precision_vals, recall_vals, accuracy_vals):
             precision_total += float(precision_val[1])
             recall_total += float(recall_val[1])
+            accuracies.append(float(accuracy_val[1]))
             accuracy_total += float(accuracy_val[1])
             matrix_total = matrix_total + np.array(matrix)
             counter += 1
@@ -70,7 +72,7 @@ def cross_validate(data_folds, label_folds):
     print("Average recall: " + str(recall_avg / folds))
     print("Average accuracy: " + str(accuracy_avg / folds))
 
-    return [precision_avg / folds, recall_avg / folds, accuracy_avg / folds], matrix_total
+    return [precision_avg / folds, recall_avg / folds, accuracy_avg / folds], matrix_total, accuracies
 
 def get_folds(dataset, num_folds):
 

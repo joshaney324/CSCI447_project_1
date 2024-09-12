@@ -1,6 +1,20 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+def plot_boxplot(ori_data, noisy_data, filename):
+    """
+    Plots the boxplot of testing accuracy.
+    """
+    fig, ax_list = plt.subplots(1, 2)
+    ax_list[0].set_title("Original training accuracy")
+    ax_list[0].boxplot(ori_data)
+    ax_list[0].set_ylabel('Accuracy')
+
+    ax_list[1].set_title("Noisy training accuracy")
+    ax_list[1].boxplot(noisy_data)
+    ax_list[1].set_ylabel('Accuracy')
+    plt.savefig("../output/" + filename + ".svg", format='svg', dpi=1200)
+
 def plot_confusion_matrix(matrix, filename):
     """
     Visualizes a 2x2 confusion matrix via a heatmap.
@@ -27,7 +41,6 @@ def plot_avgs(avg_data, filename):
     """
     Plots a bar chart of a list of the percision, recall and accuracy averages of individual datasets.
     """
-    
     # round percentages
     for i in range(len(avg_data)):
         for j in range(len(avg_data[i])):
