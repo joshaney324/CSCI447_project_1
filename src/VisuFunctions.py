@@ -22,15 +22,14 @@ def plot_boxplot(ori_data, noisy_data, filename):
 
     plt.savefig("../output/" + filename + ".svg", format='svg', dpi=1200, bbox_inches="tight")
 
+
 def plot_confusion_matrix(matrix, filename):
     """
-    Visualizes a 2x2 confusion matrix via a heatmap.
+    Visualizes a 2x2 confusion
     """
     fig = plt.figure()
-    plt.imshow(matrix, cmap="turbo")
+    plt.imshow(matrix, cmap="Blues")
 
-    # Add colorbar
-    plt.colorbar(label='Values')
     matrix_sum = np.sum(matrix)
     matrix_labels = [["True Pos", "False Pos"],["False Neg","True Neg"]]
     plt.xticks([0,1], ["Predicted True","Predicted False"])
