@@ -1,5 +1,6 @@
 from NaiveBayes import NaiveBayes
 from LossFunctions import precision, recall, accuracy
+import matplotlib.pyplot as plt
 import numpy as np
 
 
@@ -68,6 +69,7 @@ def cross_validate(data_folds, label_folds):
     print("Average recall: " + str(recall_avg / folds))
     print("Average accuracy: " + str(accuracy_avg / folds))
 
+    return [precision_avg / folds, recall_avg / folds, accuracy_avg / folds]
 
 def get_folds(dataset, num_folds):
 
@@ -121,4 +123,28 @@ def get_folds(dataset, num_folds):
     # return a tuple of data_folds, label_folds
     return data_folds, label_folds
 
+def plot_avgs(avg_data, filename):
+    # round percentages
+    for i in range(len(avg_data)):
+        for j in range(len(avg_data[i])):
+            avg_data[i][j] = round(avg_data[i][j]*100, 2)
 
+    labels = ["Precision", "Recall", "Accuracy"]
+    dataset_names = ["Breast Cancer Data", "Iris Data", "House Vote Data", "Soy Beans Data", "Glass Data"]
+    x = np.arange(5)
+    width = 0.75
+
+    fig, ax = plt.subplots(layout='constrained')
+    for i in range(3):
+        avgs = [dataset[i] for dataset in avg_data]
+        # offset to group bars at the same x-tick
+        offset = (i - 1) * width
+        rects = ax.barh(3*x + offset, avgs, width, label=labels[i])
+        ax.set_yticks(3*x, labels=dataset_names)
+        ax.bar_label(rects)
+
+    ax.set(xlabel='percentage', title='Average results for precision, recall and accuracy', xlim=(0, 140))
+    ax.set_xticks(np.arange(0, 101, step=20))  
+    ax.legend(loc="upper right")
+
+    plt.savefig("../output/" + filename + ".jpg")
