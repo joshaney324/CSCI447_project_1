@@ -99,14 +99,14 @@ plot_boxplot(ori_accuracies, noisy_accuracies, "soy_set_boxplot")
 # Glass Set
 # when constructing input number of bins and number of classes to classify
 for i in [8]:
-    glass_set = GlassSet(i, 2)
+    glass_set = GlassSet(i, 7)
     naive_glass = NaiveBayes()
     print("Glass Data with " + str(i) + " bins")
     ori_avgs, matrix_total, ori_accuracies = cross_validate(data_folds, label_folds)
     avgs_original_data.append(ori_avgs)
     plot_confusion_matrix(matrix_total, "glass_set_matrix")
 
-    glass_set_noise = GlassSet(i, 2)
+    glass_set_noise = GlassSet(i, 7)
     glass_set.add_noise()
     naive_glass_noise = NaiveBayes()
 

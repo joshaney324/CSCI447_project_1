@@ -2,6 +2,7 @@ from NaiveBayes import NaiveBayes
 from LossFunctions import precision, recall, accuracy
 import numpy as np
 
+
 def cross_validate(data_folds, label_folds):
     # the cross_validate function is meant to get the precision, recall and accuracy values from each fold then print
     # out the average across folds. this function takes in a list of data folds and a list of label folds. it does not
@@ -73,6 +74,7 @@ def cross_validate(data_folds, label_folds):
     print("Average accuracy: " + str(accuracy_avg / folds))
 
     return [precision_avg / folds, recall_avg / folds, accuracy_avg / folds], matrix_total, accuracies
+
 
 def get_folds(dataset, num_folds):
 
