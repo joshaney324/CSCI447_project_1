@@ -86,6 +86,7 @@ def accuracy(predictions, labels):
                 else:
                     tn += 1
         class_accuracies.append(float((tp + tn) / (tp + tn + fp + fn)))
-        
-    return list(zip(classes, class_accuracies))
+
+    matrix = [[tp, fp],[fn, tn]]
+    return list(zip(classes, class_accuracies)), matrix
 
