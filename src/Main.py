@@ -42,6 +42,7 @@ avgs_noisy_data.append(noise_avgs)
 # Glass Set
 # when constructing input number of bins and number of classes to classify
 for i in [8]:
+    print("Glass Set")
     glass_set = GlassSet(i, 7)
     ori_avgs, noise_avgs = test_dataset(glass_set)
     avgs_original_data.append(ori_avgs)
