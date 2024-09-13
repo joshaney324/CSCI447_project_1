@@ -23,8 +23,8 @@ class NaiveBayes:
 
         self.class_probabilities = {}
         self.attribute_probabilities = {}
-        self.classes = None
         self.class_counts = {}
+        self.classes = []
 
     def set_probabilities(self, data, labels):
 
@@ -108,3 +108,5 @@ class NaiveBayes:
             predictions.append(max(total_probabilities, key=total_probabilities.get))
         return np.array(predictions)
 
+    def get_classes(self):
+        return self.classes

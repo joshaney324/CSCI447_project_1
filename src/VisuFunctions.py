@@ -23,7 +23,7 @@ def plot_boxplot(ori_data, noisy_data, filename):
     plt.savefig("../output/" + filename + ".svg", format='svg', dpi=1200, bbox_inches="tight")
 
 
-def plot_confusion_matrix(matrix, filename):
+def plot_confusion_matrix(matrix, filename, labels):
     """
     Visualizes a 2x2 confusion
     """
@@ -31,15 +31,17 @@ def plot_confusion_matrix(matrix, filename):
     plt.imshow(matrix, cmap="Blues")
 
     matrix_sum = np.sum(matrix)
-    matrix_labels = [["True Pos", "False Pos"],["False Neg","True Neg"]]
-    plt.xticks([0,1], ["Predicted True","Predicted False"])
-    plt.yticks([0,1], ["Actual True","Actual False"])
+    # matrix_labels = [["True Pos", "False Pos"],["False Neg","True Neg"]]
+    plt.xticks([0,1], labels)
+    plt.yticks([0,1], labels)
+    plt.xlabel("Expected")
+    plt.ylabel("Predicted")
     plt.title("Confusion Matrix (" + filename.split("_matrix")[0].replace("_"," ") + ")")
 
     # Add annotations
     for x in range(2):
         for y in range(2):
-            text = plt.text(x,y, matrix_labels[x][y] + "\n" + str(round(matrix[x][y]/matrix_sum*100,2)) + "%", ha='center', va='bottom', color='black')
+            #text = plt.text(x,y, matrix_labels[x][y] + "\n" + str(round(matrix[x][y]/matrix_sum*100,2)) + "%", ha='center', va='bottom', color='black')
             text = plt.text(x,y, matrix[x][y], ha='center', va='top', color='black')
     plt.savefig("../output/" + filename + ".svg", format='svg', dpi=1200, bbox_inches='tight')
 

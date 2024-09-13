@@ -15,6 +15,8 @@ def cross_validate(data_folds, label_folds):
     folds = len(data_folds)
     matrix_total = np.zeros((2,2))
     accuracies = []
+    all_predictions = []
+    all_labels = []
 
     # For each testing fold, set up a training and testing set and then append the loss function values
     for i in range(len(data_folds)):
@@ -40,6 +42,8 @@ def cross_validate(data_folds, label_folds):
         naive = NaiveBayes()
         naive.set_probabilities(train_data, train_labels)
         predictions = naive.classify(test_data)
+        all_predictions.extend(predictions)
+        all_labels.extend(test_labels)
 
         precision_vals = np.array(precision(predictions, test_labels))
         recall_vals = np.array(recall(predictions, test_labels))
@@ -73,7 +77,7 @@ def cross_validate(data_folds, label_folds):
     print("Average recall: " + str(recall_avg / folds))
     print("Average accuracy: " + str(accuracy_avg / folds))
 
-    return [precision_avg / folds, recall_avg / folds, accuracy_avg / folds], matrix_total, accuracies
+    return [precision_avg / folds, recall_avg / folds, accuracy_avg / folds], matrix_total, accuracies, all_predictions, all_labels
 
 
 def get_folds(dataset, num_folds):

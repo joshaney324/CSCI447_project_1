@@ -14,7 +14,7 @@ class HouseVoteSet:
         return self.data[:, 1:]
 
     def get_labels(self):
-        return self.data[:, 1]
+        return self.data[:, 0]
 
     def add_noise(self):
 
