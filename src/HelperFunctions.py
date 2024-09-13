@@ -13,22 +13,33 @@ def test_dataset(dataset, data_name):
     true_labels = np.array(true_labels)
 
     plot_label = data_name.replace('_', ' ').title()
-
+    
+    if(data_name == "breast_cancer"):
+        labels = np.vectorize({"2": 'benign', "4": 'malignant'}.get)(np.unique(true_labels))  
+    elif(data_name == "glass"):
+        map = {
+            "1": 'building_windows_float',
+            "2": 'building_windows_non_float',
+            "3": 'vehicle_windows_float',
+            "4": 'vehicle_windows_non_float',
+            "5": 'containers',
+            "6": 'tableware',
+            "7": 'headlamps',
+        }
+        uniques = ["%d" % number for number in np.unique((true_labels)) ]
+        labels = np.vectorize(map.get)(uniques)  
+    else:
+        labels = np.unique(true_labels)
 
     cm = confusion_matrix(predictions, true_labels, labels=np.unique(true_labels))
     plt.figure(figsize=(8, 6))
-    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=np.unique(true_labels),
-                yticklabels=np.unique(true_labels))
+    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=labels,
+                yticklabels=labels)
 
     plt.title(plot_label + ' Confusion Matrix')
     plt.xlabel('Predicted Label')
     plt.ylabel('True Label')
-
     plt.savefig("../output/" + data_name + "_dataset_matrix.svg", format='svg', dpi=1200, bbox_inches='tight')
-
-    # Show the plot
-    plt.show()
-
 
     noisy_dataset = dataset
     noisy_dataset.add_noise()
@@ -39,8 +50,8 @@ def test_dataset(dataset, data_name):
 
     cm = confusion_matrix(predictions, true_labels, labels=np.unique(true_labels))
     plt.figure(figsize=(8, 6))
-    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=np.unique(true_labels),
-                yticklabels=np.unique(true_labels))
+    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=labels,
+                yticklabels=labels)
 
     # Add labels and title
     plt.title('Noisy ' + plot_label + ' Confusion Matrix')
@@ -49,8 +60,6 @@ def test_dataset(dataset, data_name):
 
 
     plt.savefig("../output/noisy_" + data_name + "_dataset_matrix.svg", format='svg', dpi=1200, bbox_inches='tight')
-    plt.show()
-
 
     plt.figure(figsize=(8, 6))
 
@@ -62,7 +71,6 @@ def test_dataset(dataset, data_name):
     plt.ylabel('Accuracy')
 
     plt.savefig("../output/" + data_name + "_dataset_boxplot.svg", format='svg', dpi=1200, bbox_inches='tight')
-    plt.show()
 
     return ori_avgs, noisy_avgs
 
