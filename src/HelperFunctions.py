@@ -8,12 +8,15 @@ import seaborn as sns
 
 def test_dataset(dataset, data_name):
     data_folds, label_folds = get_folds(dataset, 10)
+    # get the precision, recall and accuracy values
     ori_avgs, matrix_total, ori_accuracies, predictions, true_labels = cross_validate(data_folds, label_folds)
     predictions = np.array(predictions)
     true_labels = np.array(true_labels)
 
     plot_label = data_name.replace('_', ' ').title()
     
+    # depending on the dataset, edge cases are covered in which class labels do not represent
+    # the actual names of the classes
     if(data_name == "breast_cancer"):
         labels = np.vectorize({"2": 'benign', "4": 'malignant'}.get)(np.unique(true_labels))  
     elif(data_name == "glass"):
@@ -30,27 +33,30 @@ def test_dataset(dataset, data_name):
         labels = np.vectorize(map.get)(uniques)
         labels = [s.replace('_', ' ') for s in labels]
         labels = [s.replace('-', ' ').title() for s in labels]
-
     else:
         labels = np.unique(true_labels)
 
+    # plotting of the dataset's confusion matrix
     cm = confusion_matrix(predictions, true_labels, labels=np.unique(true_labels))
     plt.figure(figsize=(8, 6))
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=labels,
                 yticklabels=labels)
-
+    # Add labels and title
     plt.title(plot_label + ' Confusion Matrix')
     plt.xlabel('True Label')
     plt.ylabel('Predicted Label')
     plt.savefig("../output/" + data_name + "_dataset_matrix.svg", format='svg', dpi=1200, bbox_inches='tight')
 
+    # adding noise to the given dataset
     noisy_dataset = dataset
     noisy_dataset.add_noise()
 
     print("With Noise")
     data_folds, label_folds = get_folds(noisy_dataset, 10)
+    # get the precision, recall and accuracy values
     noisy_avgs, matrix_total, noisy_accuracies, predictions, true_labels = cross_validate(data_folds, label_folds)
 
+    # plotting of the noisy dataset's confusion matrix
     cm = confusion_matrix(predictions, true_labels, labels=np.unique(true_labels))
     plt.figure(figsize=(8, 6))
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=labels,
