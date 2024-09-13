@@ -1,11 +1,15 @@
 from BreastCancerSet import BreastCancerSet
+from GlassSet import GlassSet
 from HelperFunctions import get_folds
 from NaiveBayes import NaiveBayes
 import numpy as np
 from LossFunctions import precision, recall, accuracy
 
+
 breast_cancer_set = BreastCancerSet()
 data_folds, label_folds = get_folds(breast_cancer_set, 10)
+
+glass_set = GlassSet(8, 7)
 
 train_data = []
 train_labels = []
