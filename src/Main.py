@@ -13,28 +13,28 @@ avgs_noisy_data = []
 # Breast Cancer Set
 print("Breast Cancer Set")
 breast_cancer = BreastCancerSet()
-ori_avgs, noise_avgs = test_dataset(breast_cancer)
+ori_avgs, noise_avgs = test_dataset(breast_cancer, "breast_cancer")
 avgs_original_data.append(ori_avgs)
 avgs_noisy_data.append(noise_avgs)
 
 # Iris Set
 print("Iris Set")
 iris_set = IrisSet()
-ori_avgs, noise_avgs = test_dataset(iris_set)
+ori_avgs, noise_avgs = test_dataset(iris_set, "iris")
 avgs_original_data.append(ori_avgs)
 avgs_noisy_data.append(noise_avgs)
 
 # House set
 print("House Set")
 house_set = HouseVoteSet()
-ori_avgs, noise_avgs = test_dataset(house_set)
+ori_avgs, noise_avgs = test_dataset(house_set, "house_vote")
 avgs_original_data.append(ori_avgs)
 avgs_noisy_data.append(noise_avgs)
 
 # Soy set
 print("Soy set")
 soy_set = SoyBeanSet()
-ori_avgs, noise_avgs = test_dataset(soy_set)
+ori_avgs, noise_avgs = test_dataset(soy_set, "soy")
 avgs_original_data.append(ori_avgs)
 avgs_noisy_data.append(noise_avgs)
 
@@ -44,7 +44,7 @@ avgs_noisy_data.append(noise_avgs)
 for i in [8]:
     print("Glass Set")
     glass_set = GlassSet(i, 7)
-    ori_avgs, noise_avgs = test_dataset(glass_set)
+    ori_avgs, noise_avgs = test_dataset(glass_set, "glass")
     avgs_original_data.append(ori_avgs)
     avgs_noisy_data.append(noise_avgs)
 

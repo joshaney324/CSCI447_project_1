@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-def test_dataset(dataset):
+def test_dataset(dataset, data_name):
     data_folds, label_folds = get_folds(dataset, 10)
     ori_avgs, matrix_total, ori_accuracies, predictions, true_labels = cross_validate(data_folds, label_folds)
     predictions = np.array(predictions)
@@ -23,10 +23,10 @@ def test_dataset(dataset):
 
     # Show the plot
     plt.show()
+    plt.savefig("../output/" + data_name + "_dataset_matrix.svg", format='svg', dpi=1200, bbox_inches='tight')
 
     noisy_dataset = dataset
     noisy_dataset.add_noise()
-
 
     print("With Noise")
     data_folds, label_folds = get_folds(noisy_dataset, 10)
@@ -43,6 +43,7 @@ def test_dataset(dataset):
     plt.title('Confusion Matrix')
 
     plt.show()
+    plt.savefig("../output/noisy_" + data_name + "_dataset_matrix.svg", format='svg', dpi=1200, bbox_inches='tight')
 
     plt.figure(figsize=(8, 6))
 
@@ -54,6 +55,7 @@ def test_dataset(dataset):
     plt.ylabel('Accuracy')
 
     plt.show()
+    plt.savefig("../output/" + data_name + "_dataset_boxplot.svg", format='svg', dpi=1200, bbox_inches='tight')
 
     return ori_avgs, noisy_avgs
 
