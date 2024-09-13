@@ -1,6 +1,61 @@
+from sklearn.metrics import confusion_matrix
 from NaiveBayes import NaiveBayes
 from LossFunctions import precision, recall, accuracy
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+def test_dataset(dataset):
+    data_folds, label_folds = get_folds(dataset, 10)
+    ori_avgs, matrix_total, ori_accuracies, predictions, true_labels = cross_validate(data_folds, label_folds)
+    predictions = np.array(predictions)
+    true_labels = np.array(true_labels)
+
+    cm = confusion_matrix(predictions, true_labels, labels=np.unique(true_labels))
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=np.unique(true_labels),
+                yticklabels=np.unique(true_labels))
+
+    plt.xlabel('Predicted Label')
+    plt.ylabel('True Label')
+    plt.title('Confusion Matrix')
+
+    # Show the plot
+    plt.show()
+
+    noisy_dataset = dataset
+    noisy_dataset.add_noise()
+
+
+    print("With Noise")
+    data_folds, label_folds = get_folds(noisy_dataset, 10)
+    noisy_avgs, matrix_total, noisy_accuracies, predictions, true_labels = cross_validate(data_folds, label_folds)
+
+    cm = confusion_matrix(predictions, true_labels, labels=np.unique(true_labels))
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=np.unique(true_labels),
+                yticklabels=np.unique(true_labels))
+
+    # Add labels and title
+    plt.xlabel('Predicted Label')
+    plt.ylabel('True Label')
+    plt.title('Confusion Matrix')
+
+    plt.show()
+
+    plt.figure(figsize=(8, 6))
+
+    # Create the box plot
+    plt.boxplot([ori_accuracies, noisy_accuracies], tick_labels=['Original Accuracies', 'Noisy Accuracies'])
+
+    plt.title('Box Plot of Original and Noisy Accuracies (Breast Cancer Dataset)')
+    plt.xlabel('Accuracy Types')
+    plt.ylabel('Accuracy')
+
+    plt.show()
+
+    return ori_avgs, noisy_avgs
 
 
 def cross_validate(data_folds, label_folds):
