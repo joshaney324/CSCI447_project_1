@@ -12,18 +12,23 @@ def test_dataset(dataset, data_name):
     predictions = np.array(predictions)
     true_labels = np.array(true_labels)
 
+    plot_label = data_name.replace('_', ' ').title()
+
+
     cm = confusion_matrix(predictions, true_labels, labels=np.unique(true_labels))
     plt.figure(figsize=(8, 6))
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=np.unique(true_labels),
                 yticklabels=np.unique(true_labels))
 
+    plt.title(plot_label + ' Confusion Matrix')
     plt.xlabel('Predicted Label')
     plt.ylabel('True Label')
-    plt.title('Confusion Matrix')
+
+    plt.savefig("../output/" + data_name + "_dataset_matrix.svg", format='svg', dpi=1200, bbox_inches='tight')
 
     # Show the plot
     plt.show()
-    plt.savefig("../output/" + data_name + "_dataset_matrix.svg", format='svg', dpi=1200, bbox_inches='tight')
+
 
     noisy_dataset = dataset
     noisy_dataset.add_noise()
@@ -38,24 +43,26 @@ def test_dataset(dataset, data_name):
                 yticklabels=np.unique(true_labels))
 
     # Add labels and title
+    plt.title('Noisy ' + plot_label + ' Confusion Matrix')
     plt.xlabel('Predicted Label')
     plt.ylabel('True Label')
-    plt.title('Confusion Matrix')
 
-    plt.show()
+
     plt.savefig("../output/noisy_" + data_name + "_dataset_matrix.svg", format='svg', dpi=1200, bbox_inches='tight')
+    plt.show()
+
 
     plt.figure(figsize=(8, 6))
 
     # Create the box plot
     plt.boxplot([ori_accuracies, noisy_accuracies], tick_labels=['Original Accuracies', 'Noisy Accuracies'])
 
-    plt.title('Box Plot of Original and Noisy Accuracies (Breast Cancer Dataset)')
+    plt.title('Box Plot of Original and Noisy Accuracies (' + plot_label + ' Dataset)')
     plt.xlabel('Accuracy Types')
     plt.ylabel('Accuracy')
 
-    plt.show()
     plt.savefig("../output/" + data_name + "_dataset_boxplot.svg", format='svg', dpi=1200, bbox_inches='tight')
+    plt.show()
 
     return ori_avgs, noisy_avgs
 
