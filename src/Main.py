@@ -28,14 +28,12 @@ cm = confusion_matrix(predictions, true_labels, labels=np.unique(true_labels))
 plt.figure(figsize=(8, 6))
 sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=np.unique(true_labels), yticklabels=np.unique(true_labels))
 
-# Add labels and title
 plt.xlabel('Predicted Label')
 plt.ylabel('True Label')
 plt.title('Confusion Matrix')
 
 # Show the plot
 plt.show()
-# plot_confusion_matrix(matrix_total, "breast_cancer_dataset_matrix", ["Benign", "Malignant"])
 
 breast_cancer_noise = BreastCancerSet()
 breast_cancer_noise.add_noise()
@@ -45,7 +43,6 @@ print("Breast cancer set with noise")
 data_folds, label_folds = get_folds(breast_cancer_noise, 10)
 noisy_avgs, matrix_total, noisy_accuracies, predictions, true_labels = cross_validate(data_folds, label_folds)
 avgs_noisy_data.append(noisy_avgs)
-# plot_confusion_matrix(matrix_total, "noisy_breast_cancer_dataset_matrix")
 
 cm = confusion_matrix(predictions, true_labels, labels=np.unique(true_labels))
 plt.figure(figsize=(8, 6))
@@ -56,11 +53,19 @@ plt.xlabel('Predicted Label')
 plt.ylabel('True Label')
 plt.title('Confusion Matrix')
 
-# Show the plot
 plt.show()
 
+plt.figure(figsize=(8, 6))
 
-plot_boxplot(ori_accuracies, noisy_accuracies, "breast_cancer_dataset_boxplot")
+# Create the box plot
+plt.boxplot([ori_accuracies, noisy_accuracies], tick_labels=['Original Accuracies', 'Noisy Accuracies'])
+
+plt.title('Box Plot of Original and Noisy Accuracies (Breast Cancer Dataset)')
+plt.xlabel('Accuracy Types')
+plt.ylabel('Accuracy')
+
+plt.show()
+
 
 # Iris Set
 iris_set = IrisSet()
@@ -70,20 +75,16 @@ print("Iris Data")
 data_folds, label_folds = get_folds(iris_set, 10)
 ori_avgs, matrix_total, ori_accuracies, predictions, true_labels = cross_validate(data_folds, label_folds)
 avgs_original_data.append(ori_avgs)
-# plot_confusion_matrix(matrix_total, "iris_dataset_matrix")
 
 cm = confusion_matrix(predictions, true_labels, labels=np.unique(true_labels))
 plt.figure(figsize=(8, 6))
 sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=np.unique(true_labels), yticklabels=np.unique(true_labels))
 
-# Add labels and title
 plt.xlabel('Predicted Label')
 plt.ylabel('True Label')
 plt.title('Confusion Matrix')
 
-# Show the plot
 plt.show()
-
 
 # iris set with noise
 iris_set_noise = IrisSet()
@@ -94,22 +95,28 @@ print("Iris Data With Noise")
 data_folds, label_folds = get_folds(iris_set_noise, 10)
 noisy_avgs, matrix_total, noisy_accuracies, predictions, true_labels = cross_validate(data_folds, label_folds)
 avgs_noisy_data.append(noisy_avgs)
-# plot_confusion_matrix(matrix_total, "noisy_iris_dataset_matrix")
 
 cm = confusion_matrix(predictions, true_labels, labels=np.unique(true_labels))
 plt.figure(figsize=(8, 6))
 sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=np.unique(true_labels), yticklabels=np.unique(true_labels))
 
-# Add labels and title
 plt.xlabel('Predicted Label')
 plt.ylabel('True Label')
 plt.title('Confusion Matrix')
 
-# Show the plot
 plt.show()
 
 
-plot_boxplot(ori_accuracies, noisy_accuracies, "iris_dataset_boxplot")
+plt.figure(figsize=(8, 6))
+
+# Create the box plot
+plt.boxplot([ori_accuracies, noisy_accuracies], tick_labels=['Original Accuracies', 'Noisy Accuracies'])
+
+plt.title('Box Plot of Original and Noisy Accuracies (Iris Data)')
+plt.xlabel('Accuracy Types')
+plt.ylabel('Accuracy')
+
+plt.show()
 
 # House set
 house_set = HouseVoteSet()
@@ -119,17 +126,15 @@ print("House Vote Data")
 data_folds, label_folds = get_folds(house_set, 10)
 ori_avgs, matrix_total, ori_accuracies, predictions, true_labels = cross_validate(data_folds, label_folds)
 avgs_original_data.append(ori_avgs)
-# plot_confusion_matrix(matrix_total, "house_vote_dataset_matrix", ["Democrat", "Republican"])
+
 cm = confusion_matrix(predictions, true_labels, labels=np.unique(true_labels))
 plt.figure(figsize=(8, 6))
 sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=np.unique(true_labels), yticklabels=np.unique(true_labels))
 
-# Add labels and title
 plt.xlabel('Predicted Label')
 plt.ylabel('True Label')
 plt.title('Confusion Matrix')
 
-# Show the plot
 plt.show()
 
 # House set with noise
@@ -141,20 +146,27 @@ print("House Vote Data With Noise")
 data_folds, label_folds = get_folds(house_set_noise, 10)
 noisy_avgs, matrix_total, noisy_accuracies, predictions, true_labels = cross_validate(data_folds, label_folds)
 avgs_noisy_data.append(noisy_avgs)
-# plot_confusion_matrix(matrix_total, "noisy_house_vote_dataset_matrix")
+
 cm = confusion_matrix(predictions, true_labels, labels=np.unique(true_labels))
 plt.figure(figsize=(8, 6))
 sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=np.unique(true_labels), yticklabels=np.unique(true_labels))
 
-# Add labels and title
 plt.xlabel('Predicted Label')
 plt.ylabel('True Label')
 plt.title('Confusion Matrix')
 
-# Show the plot
 plt.show()
 
-plot_boxplot(ori_accuracies, noisy_accuracies, "house_vote_dataset_boxplot")
+plt.figure(figsize=(8, 6))
+
+# Create the box plot
+plt.boxplot([ori_accuracies, noisy_accuracies], tick_labels=['Original Accuracies', 'Noisy Accuracies'])
+
+plt.title('Box Plot of Original and Noisy Accuracies (House Vote Dataset)')
+plt.xlabel('Accuracy Types')
+plt.ylabel('Accuracy')
+
+plt.show()
 
 # Soy set
 soy_set = SoyBeanSet()
@@ -164,7 +176,17 @@ print("Soy Data")
 data_folds, label_folds = get_folds(soy_set, 10)
 ori_avgs, matrix_total, ori_accuracies, predictions, true_labels = cross_validate(data_folds, label_folds)
 avgs_original_data.append(ori_avgs)
-# plot_confusion_matrix(matrix_total, "soy_dataset_matrix")
+
+cm = confusion_matrix(predictions, true_labels, labels=np.unique(true_labels))
+plt.figure(figsize=(8, 6))
+sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=np.unique(true_labels), yticklabels=np.unique(true_labels))
+
+plt.xlabel('Predicted Label')
+plt.ylabel('True Label')
+plt.title('Confusion Matrix')
+
+plt.show()
+
 
 # Soy set with noise
 soy_set_noise = SoyBeanSet()
@@ -175,21 +197,26 @@ print("Soy Data With Noise")
 data_folds, label_folds = get_folds(soy_set_noise, 10)
 noisy_avgs, matrix_total, noisy_accuracies, predictions, true_labels = cross_validate(data_folds, label_folds)
 avgs_noisy_data.append(noisy_avgs)
-# plot_confusion_matrix(matrix_total, "noisy_soy_dataset_matrix")
 
 cm = confusion_matrix(predictions, true_labels, labels=np.unique(true_labels))
 plt.figure(figsize=(8, 6))
 sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=np.unique(true_labels), yticklabels=np.unique(true_labels))
 
-# Add labels and title
 plt.xlabel('Predicted Label')
 plt.ylabel('True Label')
 plt.title('Confusion Matrix')
 
-# Show the plot
 plt.show()
 
-plot_boxplot(ori_accuracies, noisy_accuracies, "soy_dataset_boxplot")
+# Create the box plot
+plt.boxplot([ori_accuracies, noisy_accuracies], tick_labels=['Original Accuracies', 'Noisy Accuracies'])
+
+plt.title('Box Plot of Original and Noisy Accuracies (House Vote Dataset)')
+plt.xlabel('Accuracy Types')
+plt.ylabel('Accuracy')
+
+plt.show()
+
 
 # Glass Set
 # when constructing input number of bins and number of classes to classify
@@ -199,18 +226,16 @@ for i in [8]:
     print("Glass Data with " + str(i) + " bins")
     ori_avgs, matrix_total, ori_accuracies, predictions, true_labels = cross_validate(data_folds, label_folds)
     avgs_original_data.append(ori_avgs)
-    # plot_confusion_matrix(matrix_total, "glass_dataset_matrix")
+
     cm = confusion_matrix(predictions, true_labels, labels=np.unique(true_labels))
     plt.figure(figsize=(8, 6))
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=np.unique(true_labels),
                 yticklabels=np.unique(true_labels))
 
-    # Add labels and title
     plt.xlabel('Predicted Label')
     plt.ylabel('True Label')
     plt.title('Confusion Matrix')
 
-    # Show the plot
     plt.show()
 
     glass_set_noise = GlassSet(i, 7)
@@ -221,21 +246,26 @@ for i in [8]:
     data_folds, label_folds = get_folds(glass_set_noise, 10)
     noisy_avgs, matrix_total, noisy_accuracies, predictions, true_labels = cross_validate(data_folds, label_folds)
     avgs_noisy_data.append(noisy_avgs)
-    # plot_confusion_matrix(matrix_total, "noisy_glass_dataset_matrix")
+
     cm = confusion_matrix(predictions, true_labels, labels=np.unique(true_labels))
     plt.figure(figsize=(8, 6))
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=np.unique(true_labels),
                 yticklabels=np.unique(true_labels))
 
-    # Add labels and title
     plt.xlabel('Predicted Label')
     plt.ylabel('True Label')
     plt.title('Confusion Matrix')
 
-    # Show the plot
     plt.show()
 
-    plot_boxplot(ori_accuracies, noisy_accuracies, "glass_dataset_boxplot")
+    # Create the box plot
+    plt.boxplot([ori_accuracies, noisy_accuracies], tick_labels=['Original Accuracies', 'Noisy Accuracies'])
+
+    plt.title('Box Plot of Original and Noisy Accuracies (House Vote Dataset)')
+    plt.xlabel('Accuracy Types')
+    plt.ylabel('Accuracy')
+
+    plt.show()
 
 # plot result averages
 plot_avgs(avgs_original_data, "original_data_avgs")
