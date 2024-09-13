@@ -26,8 +26,11 @@ def test_dataset(dataset, data_name):
             "6": 'tableware',
             "7": 'headlamps',
         }
-        uniques = ["%d" % number for number in np.unique((true_labels)) ]
-        labels = np.vectorize(map.get)(uniques)  
+        uniques = ["%d" % number for number in np.unique((true_labels))]
+        labels = np.vectorize(map.get)(uniques)
+        labels = [s.replace('_', ' ') for s in labels]
+        labels = [s.replace('-', ' ').title() for s in labels]
+
     else:
         labels = np.unique(true_labels)
 

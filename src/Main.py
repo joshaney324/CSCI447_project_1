@@ -6,7 +6,6 @@ from GlassSet import GlassSet
 from HelperFunctions import test_dataset
 from VisuFunctions import plot_avgs
 
-
 avgs_original_data = []
 avgs_noisy_data = []
 
